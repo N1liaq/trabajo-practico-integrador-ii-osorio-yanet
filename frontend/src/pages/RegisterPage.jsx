@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useForm from "../hooks/useForm.hook.js";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const inputClass =
   "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500";
@@ -14,7 +16,8 @@ const fields = [
 ];
 
 function RegisterPage() {
-  const { formState, handleInputChange } = useForm({
+  const navigate = useNavigate();
+  const { formState, handleInputChange, handleReset } = useForm({
     username: "",
     email: "",
     password: "",
@@ -24,8 +27,35 @@ function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState([]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setErrors([]);
+
+    try {
+      const response = await fetch(`${API_URL}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(formState),
+      });
+      const result = await response.json();
+
+      if (response.status === 201) {
+        handleReset();
+        navigate("/login", {
+          state: { message: "¡Registro exitoso! Ya podés iniciar sesión." },
+        });
+      } else if (response.status === 400) {
+        setErrors(Array.isArray(result) ? result : ["Datos inválidos"]);
+      } else {
+        setErrors(["Error interno del servidor. Intentá más tarde."]);
+      }
+    } catch {
+      setErrors(["No se pudo conectar con el servidor."]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
