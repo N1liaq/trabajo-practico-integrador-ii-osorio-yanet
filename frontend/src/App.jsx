@@ -1,14 +1,7 @@
-import { BrowserRouter } from "react-router";
-// import Navbar from "./components/Navbar.component.jsx";
-// import LoginPage from "./pages/LoginPage.jsx";
-import RegisterPage from "./pages/RegisterPage.jsx";
+import AppRouter from "./router/AppRouter";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <RegisterPage />
-    </BrowserRouter>
-  );
+  return <AppRouter />;
 }
 
 export default App;
