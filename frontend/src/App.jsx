@@ -1,12 +1,12 @@
 import { BrowserRouter } from "react-router";
 // import Navbar from "./components/Navbar.component.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
+// import LoginPage from "./pages/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
 
-Navbar;
 function App() {
   return (
     <BrowserRouter>
-      <LoginPage />
+      <RegisterPage />
     </BrowserRouter>
   );
 }
